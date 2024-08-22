@@ -4,7 +4,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define PLUGIN_VERSION "0.6"
+#define PLUGIN_VERSION "0.7"
 
 enum VXSQL
 {
@@ -62,6 +62,7 @@ public void Event_nameChange(Event event, const char[] name, bool dontBroadcast)
 	GetEventString(event, "newname", newname, 32);
 	
 	if (StrEqual(oldname, newname, true))return;
+	SQL_EscapeString(g_hDB, newname, newname, 32);
 	
 	char sQuery[300], sID2[32];
 	GetClientAuthId(client, AuthId_Steam2, sID2, 32);
@@ -107,6 +108,8 @@ void VX_SqlQuery(int client, any type)
 {
 	char sName[32], sID2[32], sID3[32], sID64[32], sIP[32], sQuery[300];
 	GetClientName(client, sName, 32);
+	SQL_EscapeString(g_hDB, sName, sName, 32);
+	
 	GetClientAuthId(client, AuthId_Steam2, sID2, 32);
 	GetClientIP(client, sIP, 32);
 	int iConnect = GetTime();
